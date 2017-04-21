@@ -6,7 +6,8 @@
                  [re-frisk "0.3.2"]
                  [figwheel-sidecar "0.5.10"]]
 
-  :plugins [[lein-cljsbuild "1.1.4"]]
+  :plugins [[lein-cljsbuild "1.1.4"]
+            [lein-cljfmt "0.5.6"]]
 
   :min-lein-version "2.5.3"
 

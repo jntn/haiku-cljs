@@ -5,7 +5,7 @@
 (s/def ::position int?)
 (s/def ::haiku-index int?)
 (s/def ::state #{:default :error :continue})
-(s/def ::start-time int?)
+(s/def ::start-time (s/nilable int?))
 (s/def ::verse string?)
 (s/def ::author string?)
 (s/def ::haiku (s/keys :req-un [::verse ::author]))
