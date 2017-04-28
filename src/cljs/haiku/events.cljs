@@ -12,24 +12,23 @@
   "Gets current letter from db"
   (nth (:verse (nth (:haikus db) (:haiku-index db))) (:position db)))
 
-
-
 (defn is-last-letter [db]
   (let [verse (:verse (nth (:haikus db) (:haiku-index db)))
         position (:position db)]
-    (= position (count verse))))
+    (= (+ position 1) (count verse))))
 
 (defn is-first-letter [db]
   (let [position (:position db)]
     (= position 0)))
 
 (defn handle-correct-key [db]
-    (if (is-first-letter db)
-      (do
-        (assoc db :start-time (.getTime (js/Date.)))
-        (update db :position inc)))
-    (if (is-last-letter db)
-      (println "last letter")))
+  "Handle updates to state when entering correct key"
+  (cond
+    (is-first-letter db) (-> db
+                           (update :position inc)
+                           (assoc :start-time (.getTime (js/Date.))))
+    (is-last-letter db) (assoc db :state :continue)
+    :else (update db :position inc)))
 
 (defn type-handler
   "React to typed key and return new state"

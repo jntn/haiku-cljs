@@ -5,9 +5,9 @@
             [haiku.events :as e]
             [cljs.spec :as s]))
 
-(def last-letter
+(def at-last-letter
   (-> db/default-db
-      (assoc :position 40)))
+      (assoc :position 37)))
 
 (deftest spec-test
   (testing "Default db"
@@ -25,6 +25,22 @@
       (is (= (:state result) :error) "Haiku is in error state")))
 
   (testing "Entering the last key"
-    (let [result (e/type-handler last-letter [:key "."])]
-      (is (= (:state result) :contine)))))
+    (let [result (e/type-handler at-last-letter [:key "."])]
+      (is (= (:state result) :continue)))))
 
+(deftest helpers
+  (testing "Getting current letter from db"
+    (let [key (haiku.events/get-current-letter db/default-db)]
+      (is (= key "T"))))
+  (testing "Checking if we are at first letter when we are"
+    (let [is-last-letter (haiku.events/is-first-letter db/default-db)]
+      (is (= is-last-letter true))))
+  (testing "Checking if we are at first letter when we are not"
+    (let [is-last-letter (haiku.events/is-first-letter at-last-letter)]
+      (is (= is-last-letter false))))
+  (testing "Checking if we are at last letter when we are not"
+    (let [is-last-letter (haiku.events/is-last-letter db/default-db)]
+      (is (= is-last-letter false))))
+  (testing "Checking if we are at last letter when we are"
+    (let [is-last-letter (haiku.events/is-last-letter at-last-letter)]
+      (is (= is-last-letter true)))))
